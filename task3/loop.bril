@@ -1,0 +1,9 @@
+@main {
+.A:
+    cond: bool = const false;
+    br cond .B .C;
+.B:
+    jmp .A;
+.C:
+    jmp .A;
+}

@@ -1,0 +1,13 @@
+@main(n: int, inc: int) {
+.loop.entry:
+    i: int = const 0;
+.loop.cond:
+    cond: bool = lt i n;
+    br cond .loop.body .loop.exit;
+.loop.body:
+    print i;
+    i: int = add i inc;
+    jmp .loop.cond;
+.loop.exit:
+    ret;
+}

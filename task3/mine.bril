@@ -1,0 +1,9 @@
+@main(input: int) {
+    x: int = id input;
+    a: int = id x;
+    b: int = id a;
+    c: int = id b;
+    d: int = id c;
+    prin
+    print d;
+}

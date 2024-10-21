@@ -1,0 +1,57 @@
+benchmarks='../benchmarks/core/*.bril'
+extract = 'total_dyn_inst: (\d+)'
+
+[runs.baseline]
+pipeline = [
+    "bril2json",
+    "brili -p {args}",
+]
+
+[runs.loop]
+pipeline = [
+    "bril2json",
+    "python ../examples/to_ssa.py",
+    "python ../examples/lvn.py -p -c -g",
+    "python ../examples/from_ssa.py",
+    "python cfg.py -p",
+    "python myldce.py",
+    "python mytdce.py",
+    "brili -p {args}",
+]
+
+[runs.noloop]
+pipeline = [
+    "bril2json",
+    "python ../examples/to_ssa.py",
+    "python ../examples/lvn.py -p -c -g",
+    "python ../examples/from_ssa.py",
+    "python cfg.py",
+    "python myldce.py",
+    "python mytdce.py",
+    "brili -p {args}",
+]
+
+# [runs.reg]
+# pipeline = [
+    # "bril2json",
+    # "python ../examples/to_ssa.py",
+    # "python ../examples/from_ssa.py",
+    # "python mytdce.py",
+    # "python myldce.py",
+    # "python cfg.py",
+    # "python myldce.py",
+    # "brili -p {args}",
+# ]
+
+# [runs.loop]
+# pipeline = [
+    # "bril2json",
+    # "python ../examples/to_ssa.py",
+    # "python mytdce.py",
+    # "python ../examples/lvn.py -p -c -g",
+    # "python ../examples/from_ssa.py",
+    # "python myldce.py",
+    # "python mytdce.py",
+    # "brili -p {args}",
+# ]
+

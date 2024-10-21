@@ -1,0 +1,32 @@
+# benchmarks = './tdce/*.bril'
+benchmarks='../benchmarks/core/*.bril'
+extract = 'total_dyn_inst: (\d+)'
+
+[runs.baseline]
+pipeline = [
+    "bril2json",
+    "brili -p {args}",
+]
+
+# [runs.mytdce]
+# pipeline = [
+    # "bril2json",
+    # "python mytdce.py",
+    # "brili -p {args}",
+# ]
+
+[runs.licm]
+pipeline = [
+    "bril2json",
+    "python licm.py",
+    "brili -p {args}",
+]
+
+[runs.mydce]
+pipeline = [
+    "bril2json",
+    "python mytdce.py",
+    "python myldce.py",
+    "brili -p {args}",
+]
+

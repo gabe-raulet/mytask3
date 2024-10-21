@@ -1,0 +1,65 @@
+For this task, I tried very hard to implement an incredibly simple/trivial
+loop optimization: hoisting constant expressions outside of a loop. The results
+are not good. Most of my time was spent catching up on building the control
+flow graph, computing dominators, finding natural loops, and reassembling the
+control flow graph into correct code. I was able to identify loops **I think**
+with some success, by computing the back edges whose source is dominated by the
+header node. The hoisting is then attempted by looking through all the instructions
+in the loop blocks (not the header) that are constant expressions, and moving
+them into a pre-header. This is potentially problematic, as there may be redefinition
+issues. Because I hadn't implemented SSA, I then looked into working with the SSA
+given in the repo. The problem then was figuring out how to get the destructed
+SSA code to generate correct results and/or not create an error in the interpreter.
+For whatever reason, my trivial dead code elimination from task one was not handling
+the undefined assignments for some reason, and there were other problems having
+to do with the "silly copies" associated with removing phi functions that was mentioned
+in the lecture notes. I ended up resolving that in a somewhat silly matter in fact,
+by iteratively collapsing consecutive id assignments of the form a = id b; c = id a;
+into c = id a; I have no idea if this is really that great of an idea, but it seemed
+to deal with all the SSA problems I was having.
+
+As for the loop invariant code motion (for constants), I am not getting any speedups,
+and in fact it is worse: the same number of instructions are being executed for
+both the hoisting version and the non-hoisting version. here is an example:
+
+@main(n: int) {
+.entry:
+    i: int = const 0;
+    sum: int = const 0;
+    jmp .loop.cond;
+.loop.cond:
+    cond: bool = lt i n;
+    br cond .loop.body .loop.exit;
+.loop.body:
+    one: int = const 1;
+    i: int = add one i;
+    sum: int = add i sum;
+    jmp .loop.cond;
+.loop.exit:
+    print sum;
+}
+
+**into**
+
+@main(n: int) {
+.entry:
+  i: int = const 0;
+  sum: int = const 0;
+.pre.loop.cond:
+  one: int = const 1;
+.loop.cond:
+  cond: bool = lt i n;
+  br cond .loop.body .loop.exit;
+.loop.exit:
+  print sum;
+  ret;
+.loop.body:
+  i: int = add one i;
+  sum: int = add i sum;
+  jmp .loop.cond;
+}
+
+It seems like it should work, and it is "faster" when I run on
+this example but there are problems in the larger benchmarks that I
+don't understand.
+

@@ -1,0 +1,46 @@
+{
+  "functions": [
+    {
+      "instrs": [
+        {
+          "label": "A"
+        },
+        {
+          "dest": "cond",
+          "op": "const",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "args": [
+            "cond"
+          ],
+          "labels": [
+            "B",
+            "C"
+          ],
+          "op": "br"
+        },
+        {
+          "label": "B"
+        },
+        {
+          "labels": [
+            "A"
+          ],
+          "op": "jmp"
+        },
+        {
+          "label": "C"
+        },
+        {
+          "labels": [
+            "A"
+          ],
+          "op": "jmp"
+        }
+      ],
+      "name": "main"
+    }
+  ]
+}

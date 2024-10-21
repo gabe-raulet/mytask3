@@ -1,0 +1,7 @@
+(A dom B) if all paths from Start to B go through A.
+dom(A) = {B : (A dom B)}
+
+Which nodes does a given node N dominate? Well, (N dom M)
+if all paths from Start to M go through N. So the set of
+nodes that N dominates is th
+

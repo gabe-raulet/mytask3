@@ -1,0 +1,50 @@
+@mod(a: int, b: int): int {
+.loop.cond:
+    cond: bool = ge a b;
+    br cond .loop.body .loop.exit;
+.loop.body:
+    a: int = sub a b;
+    jmp .loop.cond;
+.loop.exit:
+    ret a;
+}
+
+@is_mult(i: int): bool {
+    zero: int = const 0;
+    three: int = const 3;
+    five: int = const 5;
+    remainder: int = call @mod i three;
+    result: bool = eq remainder zero;
+    br result .yes .next;
+.next:
+    remainder: int = call @mod i five;
+    result: bool = eq remainder zero;
+    br result .yes .no;
+.yes:
+    result: bool = const true;
+    ret result;
+.no:
+    result: bool = const false;
+    ret result;
+}
+
+@main {
+.loop.header:
+    s: int = const 0;
+    i: int = const 0;
+    one: int = const 1;
+    thousand: int = const 1000;
+.loop.cond:
+    cond: bool = lt i thousand;
+    br cond .loop.body .loop.exit;
+.loop.body:
+    result: bool = call @is_mult i;
+    br result .loop.add .loop.inc;
+.loop.add:
+    s: int = add i s;
+.loop.inc:
+    i: int = add i one;
+    jmp .loop.cond;
+.loop.exit:
+    print s;
+}

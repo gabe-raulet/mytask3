@@ -1,0 +1,32 @@
+@main(cond: bool) {
+.A:
+    x: int = const 3;
+    br cond .B .C;
+.B:
+    y: int = const 4;
+    jmp .D;
+.C:
+    y: int = const 5;
+    jmp .D;
+.D:
+    z: int = mul x y;
+    q: int = mul y y;
+    two: int = const 2;
+    w: int = add y two;
+    br cond .E .F;
+.E:
+    five: int = const 5;
+    w: int = add w five;
+    jmp .F;
+.F:
+    p: int = add w y;
+    one: int = const 1;
+    x: int = add x one;
+    q: int = add q one;
+    print x;
+    thousand: int = const 1000;
+    xcond: bool = lt x thousand;
+    br xcond .D .G;
+.G:
+    ret;
+}

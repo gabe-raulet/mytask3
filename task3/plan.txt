@@ -1,0 +1,14 @@
+Given: set of nodes ina  loop
+
+* compute reaching definitions
+* compute loop invariant computation
+* compute dominators
+* find the exits of the loop (i.e. nodes with successor outside loop)
+* candidate statement for code motion:
+    * loop invariant
+    * in blocks that dominate all the exits of the loop
+    * assign to variable not assigned to elsewhere in the loop
+    * in blocks that dominate all blocks in that loop that use the variable assigned
+* Perform a depth first search of the blocks
+    * move the candidate to the preheader if all the invariant
+      operations it depends upon have been moved

@@ -1,0 +1,17 @@
+@main(n: int) {
+.entry:
+  i: int = const 0;
+  sum: int = const 0;
+.pre.loop.cond:
+  one: int = const 1;
+.loop.cond:
+  cond: bool = lt i n;
+  br cond .loop.body .loop.exit;
+.loop.exit:
+  print sum;
+  ret;
+.loop.body:
+  i: int = add one i;
+  sum: int = add i sum;
+  jmp .pre.loop.cond;
+}
